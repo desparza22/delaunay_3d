@@ -1,0 +1,43 @@
+#include "point.hpp"
+
+Point::Point(float x, float y, float z):
+  Point(std::vector<float> {x, y, z}) {
+}
+
+Point::Point(std::vector<float> coordinates):
+  coordinates(coordinates) {
+}
+
+int Point::num_dimensions() {
+  return coordinates.size();
+}
+
+
+float& Point::operator[](int index) {
+  return coordinates[index];
+}
+
+struct MidpointInfo Point::midpoint(Point other) {
+  struct MidpointInfo midpoint_info;
+  std::vector<float> mid_coordinates;
+  float dist_sqrd = 0;
+  for(int i = 0; i < num_dimensions(); i++) {
+    float mid_coordinate = (coordinates[i] + other[i]) / 2;
+    mid_coordinates.push_back(mid_coordinate);
+    
+    float coord_dist = mid_coordinate - coordinates[i];
+    dist_sqrd += coord_dist * coord_dist;
+  }
+
+  midpoint_info.midpoint = std::make_shared<Point>(mid_coordinates);
+  midpoint_info.distance_to_either_sqrd = dist_sqrd;
+  return midpoint_info;
+}
+
+std::ostream& operator<<(std::ostream& os, const Point &p) {
+  os << "[Pt: ";
+  for(float coordinate: p.coordinates) {
+    os << coordinate << ", ";
+  }
+  return os << "]";
+}

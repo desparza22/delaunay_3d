@@ -1,0 +1,35 @@
+#ifndef PLANE_HPP
+#define PLANE_HPP
+
+#include <iostream>
+#include <vector>
+#include <cassert>
+#include "point.hpp"
+#include "line.hpp"
+
+class Plane;
+
+class Plane {
+private:
+  Point center;
+  Line unit_vertical;
+  Line unit_horizontal;
+  Line unit_directional;
+  
+public:
+  Plane(Point passed_center, Line vertical, Line horizontal);
+
+  Point translate_coordinates(float vert_dist_from_center,
+			      float horiz_dist_from_center);
+  int space_dimensions();
+  void change_center(Point new_center);
+  Point get_center();
+
+  Line get_vertical();
+  Line get_horizontal();
+  Line get_directional();
+  friend std::ostream& operator<<(std::ostream& os, const Plane &p);
+};
+
+
+#endif

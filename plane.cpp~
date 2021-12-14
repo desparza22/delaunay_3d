@@ -1,0 +1,61 @@
+#include "plane.hpp"
+
+
+Plane::Plane(Point passed_center, Line vertical, Line horizontal):
+  center(passed_center),
+  unit_vertical(vertical.get_unit()),
+  unit_horizontal(horizontal.get_unit()),
+  unit_directional(unit_vertical.cross_multiply(unit_horizontal)) {
+
+  assert((center.num_dimensions() == vertical.num_dimensions() &&
+	  vertical.num_dimensions() == horizontal.num_dimensions()) &&
+	 "Center point, vertical and horizontal lines should have the same dimensions\n.");
+  
+  unit_vertical.set_reference_point(center);
+  unit_horizontal.set_reference_point(center);
+}
+
+
+Point Plane::translate_coordinates(float vert_dist_from_center, float horiz_dist_from_center) {
+  std::vector<float> point_coordinates;
+  for(int dimension = 0; dimension < space_dimensions(); dimension++) {
+    float coordinate = center[dimension] +
+      unit_vertical[dimension] * vert_dist +
+      unit_horizontal[dimension] * horiz_dist;
+    
+    point_coordinates.push_back(coordinate);
+  }
+  return Point(point_coordinates);
+}
+
+int Plane::space_dimensions() {
+  return center.num_dimensions();
+}
+
+void Plane::change_center(Point new_center) {
+  assert((new_center.num_dimensions() == space_dimensions()) &&
+	 "Center point must maintain the same dimensions as the old line.\n");
+  this->center = new_center;
+  //this->unit_vertical.set_reference_point(new_center);
+  //this->unit_horizontal.set_reference_point(new_center);
+}
+
+Point Plane::get_center() {
+  return center;
+}
+
+Line Plane::get_vertical() {
+  return unit_vertical;
+}
+
+Line Plane::get_horizontal() {
+  return unit_horizontal;
+}
+
+Line Plane::get_directional() {
+  return unit_directional;
+}
+
+std::ostream& operator<<(std::ostream &os, const Plane &p) {
+  return os << "[Plane: " << p.center << " " << p.unit_vertical << " " << p.unit_horizontal << "]";
+}

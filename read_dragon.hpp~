@@ -1,0 +1,15 @@
+#ifndef READ_DRAGON_HPP
+#define READ_DRAGON_HPP
+
+#include <fstream>
+#include <string>
+#include <vector>
+#include <iostream>
+
+#include "point.hpp"
+
+std::string filename("dragon_stand/dragonStandRight_312.ply");
+
+void read_points();
+
+#endif

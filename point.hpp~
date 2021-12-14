@@ -1,0 +1,33 @@
+#ifndef POINT_HPP
+#define POINT_HPP
+
+#include <vector>
+#include <iostream>
+#include <iterator>
+#include <memory>
+
+struct MidpointInfo;
+class Point;
+
+struct MidpointInfo {
+  std::shared_ptr<Point> midpoint;
+  float distance_to_either_sqrd;
+};
+
+class Point {
+private:
+  std::vector<float> coordinates;
+  
+public:
+  Point(std::vector<float> coordinates);
+  Point(float x, float y, float z);
+
+  int num_dimensions();
+  float& operator[](int index);
+
+  struct MidpointInfo midpoint(Point other);
+
+  friend std::ostream& operator<<(std::ostream& os, const Point &p);
+};
+
+#endif

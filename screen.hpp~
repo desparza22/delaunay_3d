@@ -1,0 +1,78 @@
+#ifndef SCREEN_HPP
+#define SCREEN_HPP
+
+#include <Eigen/Core>
+#include <Eigen/Cholesky>
+#include <memory>
+#include <iostream>
+
+#include "point.hpp"
+#include "plane3d.hpp"
+
+struct PointRelativity;
+
+struct PointRelativity {
+  float distance;
+  float vertical_from_center;
+  float horizontal_from_center;
+
+  friend std::ostream& operator<<(std::ostream& os,
+				  const PointRelativity &relative_position);
+};
+
+
+
+class Screen;
+
+class Screen {
+private:
+  float height;
+  float width;
+  float min_dist;
+  float max_dist;
+  
+  Plane3D plane;
+  float expansion_rate;
+
+  Eigen::LDLT<Eigen::Matrix3f> solver;
+  bool solver_constructed = false;
+  Eigen::LDLT<Eigen::Matrix3f> get_solver();
+  
+public:
+  Screen(Plane3D plane,
+	 float width, float height,
+	 float min_dist, float max_dist,
+	 float expansion_rate);
+
+  float get_min_dist();
+  float get_max_dist();
+
+  Point r3_to_r2(Point point_in_r3);
+  bool is_in_view(Point point_in_r3);
+
+  //Returns negative  value if point is not in view
+  float distance(Point point_in_r3);
+
+
+  struct PointRelativity get_position_relative(Point p);
+  Point r3_to_r2(struct PointRelativity position_relative);
+  bool is_in_view(struct PointRelativity position_relative);
+  bool is_in_view(struct PointRelativity position_relative,
+		  Point point_in_r2);
+  
+  float distance(struct PointRelativity position_relative);
+
+  float get_width();
+  float get_height();
+  Point get_center();
+  void change_center(Point new_center);
+
+  void shift_forward(float distance);
+  void shift_right(float distance);
+  void rotate_horizontal(float ratio);
+  void rotate_vertical(float ratio);
+
+  Plane3D get_plane();
+};
+
+#endif
