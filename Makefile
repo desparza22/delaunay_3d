@@ -1,7 +1,7 @@
 GCC=g++ -std=c++20 -g
-EIGEN=-I/Users/diegoesparza/clibs/eigen-3.4.0
-SDL_INCLUDE=-I/Users/diegoesparza/clibs/SDL/SDL_include
-SDL_LINK=-L ~/clibs/SDL/SDL_lib -l SDL2-2.0.0
+EIGEN=-I./clibs/eigen-3.4.0
+SDL_INCLUDE=-I./clibs/SDL/SDL_include
+SDL_LINK=-L./clibs/SDL/SDL_lib -l SDL2-2.0.0
 ALL_OBJECT=random_points.o sdl_screen.o screen.o plane3d.o line.o line2d.o line3d.o point.o drawer.o delaunay.o closest_finder.o read_dragon.o
 ALL_HEADER=random_points.hpp sdl_screen.hpp screen.hpp plane3d.hpp line.hpp line2d.hpp line3d.hpp point.hpp drawer.hpp delaunay.hpp closest_finder.hpp read_dragon.hpp
 RANDOM_POINTS_TEST=-D TEST_RANDOM_POINTS=1
@@ -53,14 +53,4 @@ closest_finder.o: closest_finder.hpp closest_finder.cpp point.o
 
 clean:
 	rm -f main
-	rm -f random_points.o
-	rm -f sdl_screen.o
-	rm -f screen.o
-	rm -f plane3d.o
-	rm -f line.o
-	rm -f line3d.o
-	rm -f point.o
-	rm -f delaunay.o
-	rm -f drawer.o
-	rm -f closest_finder.o
-	rm -f read_dragon.o
+	rm -f *.o
